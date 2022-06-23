@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    container_name: docker-node-mongo
+    restart: always
+    build:
+      context: .
+      dockerfile: DockerfileAPI
+    ports:
+      - '80:3000'
+    external_links:
+      - mongo
+      - vm-launcher
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+  vm:
+    container_name: vm-launcher
+    restart: always
+    build:
+      context: .
+      dockerfile: DockerfileVM
+    ports:
+      - '81:3001'
+    external_links:
+      - mongo
+      - docker-node-mongo
